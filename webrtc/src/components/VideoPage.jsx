@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash, FaPhoneSlash, FaPhone, FaPhoneAlt } from 'react-icons/fa';
 import { socketContext } from '../socketContext';
 
@@ -9,8 +9,7 @@ const VideoPage = () => {
     setAudioUser, audioUser, videoUser, notification, setNotification
   } = useContext(socketContext);
 
-  const myVideoRef = useRef(null);
-  const userVideoRef = useRef(null);
+  
 
   useEffect(() => {
     if (notification) {
@@ -25,17 +24,9 @@ const VideoPage = () => {
     }
   }, [callEnded]);
 
-  useEffect(() => {
-    if (myVideoRef.current) {
-      myVideoRef.current.srcObject = stream;
-    }
-  }, [stream]);
+  
 
-  useEffect(() => {
-    if (userVideoRef.current && callAccepted && !callEnded) {
-      userVideoRef.current.srcObject = userVideo;
-    }
-  }, [callAccepted, callEnded, userVideo]);
+  
 
   const [callerId, setCallerId] = useState('');
 
@@ -97,13 +88,7 @@ const VideoPage = () => {
     }
   };
 
-  const handlePlayPause = (videoRef) => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
-  };
+  
 
   const handleFullscreen = (videoRef) => {
     if (videoRef.current.requestFullscreen) {
@@ -119,7 +104,7 @@ const VideoPage = () => {
 
   return (
     <div style={containerStyle}>
-      <video ref={myVideoRef} style={videoStyle} autoPlay muted />
+      <video ref={myVideo} style={videoStyle} autoPlay muted />
       <div style={{ display: 'flex', marginTop: '10px', gap: '10px' }}>
         <button
           onClick={() => setAudioUser(!audioUser)}
@@ -138,26 +123,12 @@ const VideoPage = () => {
       </div>
 
       {callAccepted && !callEnded && (
-        <video ref={userVideoRef} style={videoStyle} autoPlay />
+        <video ref={userVideo} style={videoStyle} autoPlay />
       )}
 
       <div style={controlsStyle}>
-        <button
-          onClick={() => handlePlayPause(myVideoRef)}
-          style={buttonStyle}
-          onMouseOver={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor)}
-          onMouseOut={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor)}
-        >
-          Play/Pause
-        </button>
-        <button
-          onClick={() => handleFullscreen(userVideoRef)}
-          style={buttonStyle}
-          onMouseOver={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor)}
-          onMouseOut={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor)}
-        >
-          Fullscreen
-        </button>
+      
+        
         <input type="text" placeholder='Enter ID' onChange={(e) => setCallerId(e.target.value)} />
         <input type="text" placeholder='Enter Name' onChange={(e) => setName(e.target.value)} />
         <button onClick={() => callUser(callerId)} style={buttonStyle} disabled={callAccepted && !callEnded}>
