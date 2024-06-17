@@ -6,23 +6,12 @@ const VideoPage = () => {
   const {
     call, callAccepted, myVideo, userVideo, stream, name, setName,
     callEnded, me, callUser, leaveCall, answerCall, setVideoUser,
-    setAudioUser, audioUser, videoUser, notification, setNotification
+    setAudioUser, audioUser, videoUser, 
   } = useContext(socketContext);
 
   
 
-  useEffect(() => {
-    if (notification) {
-      alert(notification);
-      setNotification('');
-    }
-  }, [notification, setNotification]);
-
-  useEffect(() => {
-    if (callEnded) {
-      alert("Call ended");
-    }
-  }, [callEnded]);
+  
 
   
 
@@ -81,45 +70,22 @@ const VideoPage = () => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(me);
-      setNotification('Copied ID to clipboard');
+      
     } catch (err) {
       console.error('Failed to copy:', err);
-      setNotification('Failed to copy ID');
+    
     }
   };
 
   
 
-  const handleFullscreen = (videoRef) => {
-    if (videoRef.current.requestFullscreen) {
-      videoRef.current.requestFullscreen();
-    } else if (videoRef.current.mozRequestFullScreen) {
-      videoRef.current.mozRequestFullScreen();
-    } else if (videoRef.current.webkitRequestFullscreen) {
-      videoRef.current.webkitRequestFullscreen();
-    } else if (videoRef.current.msRequestFullscreen) {
-      videoRef.current.msRequestFullscreen();
-    }
-  };
+  
 
   return (
     <div style={containerStyle}>
       <video ref={myVideo} style={videoStyle} autoPlay muted />
       <div style={{ display: 'flex', marginTop: '10px', gap: '10px' }}>
-        <button
-          onClick={() => setAudioUser(!audioUser)}
-          style={audioUser ? { ...buttonStyle, backgroundColor: 'green' } : { ...buttonStyle, backgroundColor: 'red' }}
-        >
-          {audioUser ? <FaMicrophone style={iconStyle} /> : <FaMicrophoneSlash style={iconStyle} />}
-          {audioUser ? 'Mute' : 'Unmute'}
-        </button>
-        <button
-          onClick={() => setVideoUser(!videoUser)}
-          style={videoUser ? { ...buttonStyle, backgroundColor: 'green' } : { ...buttonStyle, backgroundColor: 'red' }}
-        >
-          {videoUser ? <FaVideo style={iconStyle} /> : <FaVideoSlash style={iconStyle} />}
-          {videoUser ? 'Video On' : 'Video Off'}
-        </button>
+        
       </div>
 
       {callAccepted && !callEnded && (
@@ -153,7 +119,7 @@ const VideoPage = () => {
         <button onClick={handleCopy} style={{ ...buttonStyle, backgroundColor: '#28a745' }}>
           Copy My ID
         </button>
-        {notification && <p style={{ marginTop: '5px', color: 'green' }}>{notification}</p>}
+      
       </div>
 
       <style>

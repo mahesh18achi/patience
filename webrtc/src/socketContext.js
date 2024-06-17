@@ -15,7 +15,7 @@ const ContextProvider = ({ children }) => {
   const [videoUser, setVideoUser] = useState(true);
   const [audioUser, setAudioUser] = useState(true);
   const [name, setName] = useState('');
-  const [notification,setNotification]=useState('')
+  
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -49,17 +49,9 @@ const ContextProvider = ({ children }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (stream && stream.getVideoTracks().length > 0) {
-      stream.getVideoTracks()[0].enabled = videoUser;
-    }
-  }, [videoUser, stream]);
+  
 
-  useEffect(() => {
-    if (stream && stream.getAudioTracks().length > 0) {
-      stream.getAudioTracks()[0].enabled = audioUser;
-    }
-  }, [audioUser, stream]);
+  
 
   const handleCallEnded = (id) => {
     setCallEnded(true);
@@ -118,9 +110,7 @@ const ContextProvider = ({ children }) => {
         setCallAccepted(true);
         peer.signal(signal);
       });
-      socket.on('alreadyincall',(msg)=>{
-        setNotification('already in call')
-      })
+      
   
       connectionRef.current = peer;
     } catch (error) {
@@ -151,8 +141,7 @@ const ContextProvider = ({ children }) => {
       setVideoUser,
       audioUser,
       videoUser,
-      notification,
-      setNotification
+      
     }}>
       {children}
     </socketContext.Provider>
