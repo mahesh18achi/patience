@@ -66,7 +66,7 @@ const ContextProvider = ({ children }) => {
     if (connectionRef.current) {
       connectionRef.current.destroy();
     }
-    socket.emit('leavecall',({id}))
+    
     window.location.reload();
   };
 

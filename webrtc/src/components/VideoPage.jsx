@@ -33,9 +33,9 @@ const VideoPage = () => {
 
   useEffect(() => {
     if (userVideoRef.current && callAccepted && !callEnded) {
-      userVideoRef.current.srcObject = call.stream;
+      userVideoRef.current.srcObject = userVideo;
     }
-  }, [callAccepted, callEnded, call]);
+  }, [callAccepted, callEnded, userVideo]);
 
   const [callerId, setCallerId] = useState('');
 
